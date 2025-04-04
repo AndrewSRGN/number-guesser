@@ -1,5 +1,3 @@
-let target;
-
 const humanGuessInput = document.getElementById('human-guess');
 const roundNumberDisplay = document.getElementById('round-number');
 
@@ -16,15 +14,17 @@ const subtractButton = document.getElementById('subtract');
 
 guessButton.addEventListener('click', () => {
   // Generate the target value
-  target = generateTarget();
+  const target = generateTarget();
   // Retrieve the player's guess
   const currentHumanGuess = humanGuessInput.value;
   // Make a random 'computer guess'
   const computerGuess = Math.floor(Math.random() * 10);
 
-  // Display the computer guess and the target
+  // Display the target number
+  targetNumberDisplay.innerText = target.toString();
+
+  // Display the computer guess
   computerGuessDisplay.innerText = computerGuess.toString();
-  targetNumberDisplay.innerText = target;
   
   // Determine if the human or computer wins:
   const humanIsWinner = compareGuesses(currentHumanGuess, computerGuess, target)
@@ -48,6 +48,9 @@ guessButton.addEventListener('click', () => {
   computerScoreDisplay.innerText = computerScore.toString();
   
   // Set the correct disabled state for the buttons
+  humanGuessInput.setAttribute('disabled', "true");
+  addButton.setAttribute('disabled', "true");
+  subtractButton.setAttribute('disabled', "true");
   guessButton.setAttribute('disabled', "true")
   nextRoundButton.removeAttribute('disabled');
 });
@@ -55,22 +58,26 @@ guessButton.addEventListener('click', () => {
 nextRoundButton.addEventListener('click', () => {
   // Increase the round number
   advanceRound();
+
   // Display the new round number
   roundNumberDisplay.innerText = currentRoundNumber.toString();
 
   // Set the correct disabled state for the buttons
+  humanGuessInput.removeAttribute('disabled');
+  addButton.removeAttribute('disabled');
   nextRoundButton.setAttribute('disabled', "true");
   guessButton.removeAttribute('disabled');
 
   // Reset the guess input box and the target number display:
   targetNumberDisplay.innerText = '?';
   guessButton.innerText = 'Make a Guess';
-  humanGuessInput.value = '';
+  humanGuessInput.value = '0';
   computerGuessDisplay.innerText = '?';
   computerWinsDisplay.innerText = '';
   guessButton.classList.remove('winning-text');
 });
 
+// Input event handlers
 addButton.addEventListener('click', () => {
   humanGuessInput.value = +humanGuessInput.value + 1;
   handleValueChange(humanGuessInput.value);
@@ -97,7 +104,3 @@ const handleValueChange = value => {
     subtractButton.setAttribute('disabled', "true");
   }
 }
-
-humanGuessInput.addEventListener('input', (e) =>{
-  handleValueChange(e.target.value);
-});
