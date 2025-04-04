@@ -18,7 +18,7 @@ const generateTarget = () => {
  * @return {boolean} - True if the human wins, false if the computer wins.
  */
 const compareGuesses = (humanGuess, computerGuess, secretTarget) => {
-    return getAbsoluteDistance(secretTarget, humanGuess) < getAbsoluteDistance(secretTarget, computerGuess);
+    return getAbsoluteDistance(secretTarget, humanGuess) <= getAbsoluteDistance(secretTarget, computerGuess);
 }
 
 /**
